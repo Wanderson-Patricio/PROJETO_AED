@@ -2,14 +2,16 @@
 #define FUNCTIONS_H_INCLUDED
 
 #define MAX_PASSAGEIROS 5
-#define MAX_NAVES 20
+#define MAX_NAVES 100
 #define MAX_RECURSOS 3
 
 /************************************************/
-/***************Implementação das Estruturas*****/
+/***************Implementaï¿½ï¿½o das Estruturas*****/
 /************************************************/
 
-// Explicação
+// Um passgeiro pssui um id (identificador ï¿½nico), um nome, uma idade e um planeta de origem
+// Alï¿½m disso, um passageiro possui um identificador para dizer se ele estï¿½ doente, e se ele tem alguma especializaï¿½ï¿½o
+// Por exemplo, se ï¿½ um mï¿½dico.
 typedef struct passageiro{
     char id[8];
     char nome[50];
@@ -19,7 +21,8 @@ typedef struct passageiro{
     int especializado;
 } Passageiro;
 
-// Explicação
+// Uma nave possui um id, um conjunto de passageiros, e uma lista de recursos
+// Alï¿½m de ter uma prioridade, dependendo de seus recursos e passageiros
 typedef struct nave{
     char id[8];
     char recursos[MAX_RECURSOS][50];
@@ -27,17 +30,18 @@ typedef struct nave{
     int prioridade;
 } Nave;
 
-// Explicação
+// A fila de Prioridades tem uma lista de naves, com tamanho mï¿½ximo de MAX_NAVES
+// alï¿½m de uma variï¿½vel que indica a quantidade na fila
 typedef struct heap{
     int tamanho;
     Nave naves[MAX_NAVES];
 } Heap;
 
 /************************************************/
-/***************Implementação das Funções********/
+/***************Implementaï¿½ï¿½o das Funï¿½ï¿½es********/
 /************************************************/
 
-// Explicação
+// Essa funï¿½ï¿½o cria um passageiro atravï¿½s de suas informaï¿½ï¿½es
 Passageiro criarPassageiro(char* nome, int idade, int doente, int especializado, char* origem, char* id){
     Passageiro p;
     strcpy(p.nome, nome);
@@ -50,22 +54,27 @@ Passageiro criarPassageiro(char* nome, int idade, int doente, int especializado,
     return p;
 }
 
-// Explicação
+// Essa funï¿½ï¿½o calcula a prioridade inicial de uma nave com base nos recursos e passageiros
 int calculaPrioridade(Nave n){
     int prioridade = 0;
 
     for(int i = 0; i < MAX_PASSAGEIROS; i++){
+
+        // Se o passageiro ï¿½ especializado a prioridade aumenta em 5
         if(n.passageiros[i].especializado == 1){
             prioridade += 5;
         }
 
+        // Se o passageiro estï¿½ doente a prioridade aumenta em 5
         if(n.passageiros[i].doente == 1){
             prioridade += 3;
         }
     }
 
     for(int i = 0; i < MAX_RECURSOS; i++){
-        if(strcmp(n.recursos[i], "Alimento") == 0 || strcmp(n.recursos[i], "Medicina") == 0 || strcmp(n.recursos[i], "Armamento") || strcmp(n.recursos[i], "Recursos raros")){
+
+        // Se algum dos recursos da nave for essencial a prioridade aumenta em 20
+        if(strcmp(n.recursos[i], "ALIMENTOS") == 0 || strcmp(n.recursos[i], "REMEDIOS") == 0 || strcmp(n.recursos[i], "ARMAMENTO") || strcmp(n.recursos[i], "RECURSOS RAROS")){
             prioridade += 20;
         }
     }
@@ -73,7 +82,7 @@ int calculaPrioridade(Nave n){
     return prioridade;
 }
 
-// Explicação
+// Essa funï¿½ï¿½o cria uma nave atravï¿½s de suas informaï¿½ï¿½es
 Nave criarNave(char* id, char recursos[][50], Passageiro passageiros[]){
     Nave n;
     strcpy(n.id, id);
@@ -90,7 +99,7 @@ Nave criarNave(char* id, char recursos[][50], Passageiro passageiros[]){
     return n;
 }
 
-// Explicação
+// Cria uma Fila de Prioridades vazia
 Heap criarHeap(){
     Heap h;
     h.tamanho = 0;
@@ -99,7 +108,7 @@ Heap criarHeap(){
 }
 
 
-// Explicação
+// Imprime as informaï¿½ï¿½es do passageiro p
 void infoPassageiro(Passageiro p){
     printf("Nome: %s \n", p.nome);
     printf("Idade: %d anos \n", p.idade);
@@ -107,20 +116,20 @@ void infoPassageiro(Passageiro p){
     printf("Planeta de Origem: %s \n", p.origem);
 
     if(p.especializado == 1){
-        printf("Possui especialização. \n");
+        printf("Possui especializaï¿½ï¿½o. \n");
     }else{
-        printf("Não possui especialização. \n");
+        printf("Nï¿½o possui especializaï¿½ï¿½o. \n");
     }
 
     if(p.doente == 1){
-        printf("Está Doente. \n");
+        printf("Estï¿½ Doente. \n");
     }else{
-        printf("Não está Doente. \n");
+        printf("Nï¿½o estï¿½ Doente. \n");
     }
     printf("\n");
 }
 
-// Explicação
+// Imprime as informaï¿½ï¿½es da nave n
 void infoNave(Nave n){
     printf("******************************************************* \n");
     printf("Id da Nave: %s \n", n.id);
@@ -139,7 +148,9 @@ void infoNave(Nave n){
     printf("******************************************************* \n");
 }
 
-// Explicação
+// Essa funï¿½ï¿½o escolhe um nï¿½mero aleatï¿½rio entre 1 e 10
+// Se o nï¿½mero for igual a 10 (10% de chance) ele altera a prioridade da nave
+// Atravï¿½s da alterarPrioridade()
 void verificarPrioridade(Nave* n){
     srand(time(NULL));
     int probabilidade = rand()%10 + 1;
@@ -149,7 +160,7 @@ void verificarPrioridade(Nave* n){
     }
 }
 
-// Explicação
+// Retorna um nï¿½mero aleatï¿½rio entre 0 e 100
 int alterarPrioridade(){
     srand(time(NULL));
 
@@ -157,7 +168,7 @@ int alterarPrioridade(){
     return newPrioridade;
 }
 
-// Explicação
+// Explicaï¿½ï¿½o
 void inserirNave(Nave n, Heap* h){
     if(h->tamanho < MAX_NAVES){
         verificarPrioridade(&n);
@@ -166,11 +177,11 @@ void inserirNave(Nave n, Heap* h){
         h->tamanho++;
         printf("Inserido com sucesso. \n");
     }else{
-        printf("A fila está cheia. \n");
+        printf("A fila estï¿½ cheia. \n");
     }
 }
 
-// Explicação
+// Explicaï¿½ï¿½o
 void removerNave(Heap* h){
     if(h->tamanho > 0){
         printf("Nave a partir \n\n");
@@ -183,14 +194,14 @@ void removerNave(Heap* h){
 }
 
 
-// Explicação
+// Troca de lugar as naves i e j da Heap h
 void trocar(Heap* h, int i, int j){
     Nave aux = h->naves[i];
     h->naves[i] = h->naves[j];
     h->naves[j] = aux;
 }
 
-// Explicação
+// Explicaï¿½ï¿½o
 void subir(Heap* h, int index){
     int j = (int) index/2;
 
@@ -202,7 +213,7 @@ void subir(Heap* h, int index){
     }
 }
 
-// Explicação
+// Explicaï¿½ï¿½o
 void descer(Heap* h, int index){
     int j = 2*index;
 

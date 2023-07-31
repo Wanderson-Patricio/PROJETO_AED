@@ -1,0 +1,28 @@
+*************** Lista De Planetas da Galáxia e suas abreviações ***************
+
+AJP - Ajilon Prime
+BAL - Balancar
+CER - Cerberus
+DED - Dedestris
+EDN - Eden
+FER - Ferenginar
+GAG - Gagarin
+HUR - Hurkos
+ILR - Ilari
+JUP - Jupiter
+KHT - Khitomer
+LED - Ledonia
+MNT - Mintaka
+NRD - Narendra
+OMC - Omicron Ceti 3
+PLX - Pollux V
+QTL - Quatal Prime
+RGL - Rigel 7
+SLR - Solarion 4
+TIT - Titan
+ULT - Ultima Thule
+VDK - Vendikar
+WPP - Wrigley Pleasure Pl.
+XRX - Xerxes VII
+YDP - Yadalla Prime
+ZET - Zetar
