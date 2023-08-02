@@ -7,6 +7,7 @@
 
 int main(){
     setlocale(LC_ALL, "portuguese");
-
+    inicializar();
+    finalizar();
     return 0;
 }

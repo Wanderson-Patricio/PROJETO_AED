@@ -34,6 +34,9 @@
 		<Unit filename="functions.h">
 			<Option target="&lt;{~None~}&gt;" />
 		</Unit>
+		<Unit filename="leitor_csv.h">
+			<Option target="&lt;{~None~}&gt;" />
+		</Unit>
 		<Unit filename="main.c">
 			<Option compilerVar="CC" />
 		</Unit>
