@@ -1,6 +1,0 @@
-#ifndef LEITOR_CSV_H_INCLUDED
-#define LEITOR_CSV_H_INCLUDED
-
-
-
-#endif // LEITOR_CSV_H_INCLUDED
