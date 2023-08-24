@@ -61,7 +61,7 @@ Passageiro criarPassageiro(char* nome, int idade, int doente, int especializado,
 // Essa fun��o cria uma nave atrav�s de suas informa��es
 Nave criarNave(int id, char recursos[][50], Passageiro passageiros[]){
     Nave n;
-    p.id = id;
+    n.id = id;
 
     for(int i = 0; i<MAX_PASSAGEIROS; i++){
         n.passageiros[i] = *(passageiros+i);
@@ -71,7 +71,7 @@ Nave criarNave(int id, char recursos[][50], Passageiro passageiros[]){
         strcpy(n.recursos[i], *(recursos + i));
     }
 
-    srand(TIME(NULL))
+    srand(time(NULL));
     n.prioridade = rand()%100 + 1;
     return n;
 }
@@ -79,7 +79,7 @@ Nave criarNave(int id, char recursos[][50], Passageiro passageiros[]){
 
 // Cria uma Fila de Prioridades vazia
 Heap* criarHeap(){
-    Heap* h = (heap*) malloc(sizeof(heap));
+    Heap* h = (Heap*) malloc(sizeof(Heap));
     h->tamanho = 0;
 
     return h;
@@ -139,35 +139,6 @@ void verificarPrioridade(Nave* n){
     }
 }
 
-
-// A nave é inserida no final, e sobe até a posição correta (função subir())
-void inserirNave(Nave n, Heap* h){
-    if(h->tamanho < MAX_NAVES){
-        verificarPrioridade(&n);
-        h->naves[h->tamanho +1] = n;
-        h->tamanho++;
-        subir(h, h->tamanho);
-        printf("Inserido com sucesso. \n");
-    }else{
-        printf("A fila est� cheia. \n");
-    }
-}
-
-
-// É trocado o primeiro com o último elemento da heap, e faz o primeiro elemento (antes último) descer
-void removerNave(Heap* h){
-    if(h->tamanho > 0){
-        printf("Nave a partir \n\n");
-        infoNave(h->naves[1]);
-        trocar(h, 1, h->tamanho);
-        h->tamanho--;
-        descer(h, 1)
-    }
-
-}
-
-
-
 // Troca de lugar as naves i e j da Heap h
 void trocar(Heap* h, int i, int j){
     Nave aux = h->naves[i];
@@ -209,6 +180,32 @@ void descer(Heap* h, int index){
     }
 }
 
+// A nave é inserida no final, e sobe até a posição correta (função subir())
+void inserirNave(Nave n, Heap* h){
+    if(h->tamanho < MAX_NAVES){
+        verificarPrioridade(&n);
+        h->naves[h->tamanho +1] = n;
+        h->tamanho++;
+        subir(h, h->tamanho);
+        printf("Inserido com sucesso. \n");
+    }else{
+        printf("A fila est� cheia. \n");
+    }
+}
+
+
+// É trocado o primeiro com o último elemento da heap, e faz o primeiro elemento (antes último) descer
+void removerNave(Heap* h){
+    if(h->tamanho > 0){
+        printf("Nave a partir \n\n");
+        infoNave(h->naves[1]);
+        trocar(h, 1, h->tamanho);
+        h->tamanho--;
+        descer(h, 1);
+    }
+
+}
+
 
 // Exibe a informação de todas as naves de uma heap
 void exibir_heap(Heap* h){
@@ -216,7 +213,7 @@ void exibir_heap(Heap* h){
         printf("Fila vazia. \n");
     }
 
-    for(int i = 1 0; i<= h->tamanho; i++){
+    for(int i = 1; i<= h->tamanho; i++){
         infoNave(h->naves[i]);
     }
 }
@@ -232,8 +229,7 @@ void gera_heap_por_csv(char* passageiros, char* recursos, Heap* h){
 
 
 void inicializar(){
-    Heap fila = criarHeap();
-    gera_heap_por_csv("passageiros.csv", "recursos.csv", &fila);
+    Heap *fila = criarHeap();
 
 
     int continuar = -1;
@@ -260,25 +256,25 @@ void inicializar(){
 
         switch(opcao){
             case 1:{
-                removerNave(&fila);
+                removerNave(fila);
                 system("pause");
                 system("cls");
                 break;
             }
 
             case 2:{
-                exibir_heap(&fila, 0);
+                exibir_heap(fila);
                 break;
             }
 
             case 3:{
                 int nave, prioridade;
 
-                printf("Digite o índice da nave que deseja alterar (Disponíveis: até %d). \n", fila.tamanho);
+                printf("Digite o índice da nave que deseja alterar (Disponíveis: até %d). \n", fila->tamanho);
                 scanf("%d", &nave);
                 system("cls");
 
-                if(nave > fila.tamanho || nave <= 0){
+                if(nave > fila->tamanho || nave <= 0){
 
                     printf("Indice invalido. \n");
 
@@ -287,9 +283,9 @@ void inicializar(){
                     printf("Qual sera a nova prioridade? \n");
                     scanf("%d", &prioridade);
 
-                    fila.naves[nave-1].prioridade = prioridade;
-                    subir(&fila, nave-1);
-                    descer(&fila, nave-1);
+                    fila->naves[nave-1].prioridade = prioridade;
+                    subir(fila, nave-1);
+                    descer(fila, nave-1);
 
                     printf("Prioridade alterada. \n");
 
@@ -303,43 +299,38 @@ void inicializar(){
             case 4:{
                 Nave newNave;
                 Passageiro passageiro_aux;
-                char nome[50], id[8], origem[4], recursos[50];
-                int idade, doente, especializado;
+                char nome[50], recursos[50];
+                int idade, doente, especializado, id, origem;
 
                 printf("Id da nave? \n");
-                gets(id);
-                getchar();
-                strcpy(newNave.id, id);
+                scanf("%d", &id);
+                newNave.id = id;
 
                 for(int i = 0; i < MAX_PASSAGEIROS; i++){
                     printf("Id do passageiro %d: \n", i+1);
-                    gets(id);
-                    //getchar();
-                    strcpy(passageiro_aux.id, id);
+                    scanf("%d", &id);
+                    passageiro_aux.id = id;
 
                     printf("Nome do passageiro %d: \n", i+1);
-                    gets(nome);
-                    //getchar();
+                    fflush(stdin);
+                    __fpurge(stdin);
+                    fgets(nome, 50, stdin);
                     strcpy(passageiro_aux.nome, nome);
 
                     printf("Planeta de origem do passageiro %d: \n", i+1);
-                    gets(origem);
-                    //getchar();
-                    strcpy(passageiro_aux.origem, origem);
+                    scanf("%d", &origem);
+                    passageiro_aux.origem = origem;
 
                     printf("Idade do passageiro %d: \n", i+1);
                     scanf("%d", &idade);
-                    //getchar();
                     passageiro_aux.idade = idade;
 
-                    printf("Possui Especializacao?\nSIM - Digite 1\,NAO - Digite 0  \n");
+                    printf("Possui Especializacao?\nSIM - Digite 1\nNAO - Digite 0  \n");
                     scanf("%d", &especializado);
-                    //getchar();
                     passageiro_aux.especializado = especializado;
 
-                    printf("Esta Doente?\nSIM - Digite 1\,NAO - Digite 0  \n");
+                    printf("Esta Doente?\nSIM - Digite 1\nNAO - Digite 0  \n");
                     scanf("%d", &doente);
-                    //getchar();
                     passageiro_aux.doente = doente;
 
                     newNave.passageiros[i] = passageiro_aux;
@@ -347,12 +338,13 @@ void inicializar(){
 
                 for(int i=0; i < MAX_RECURSOS; i++){
                     printf("Qual o recurso %d da nave? \n", i+1);
-                    gets(recursos);
-                    getchar();
+                    fflush(stdin);
+                    __fpurge(stdin);
+                    fgets(recursos, 50, stdin);
                     strcpy(newNave.recursos[i], recursos);
                 }
 
-                inserirNave(newNave, &fila);
+                inserirNave(newNave, fila);
                 system("pause");
                 system("cls");
                 break;
@@ -361,17 +353,17 @@ void inicializar(){
             case 5:{
                 int nave;
 
-                printf("Digite o índice da nave que deseja visualizar (Disponíveis: até %d). \n", fila.tamanho);
+                printf("Digite o índice da nave que deseja visualizar (Disponíveis: até %d). \n", fila->tamanho);
                 scanf("%d", &nave);
                 system("cls");
 
-                if(nave > fila.tamanho || nave <= 0){
+                if(nave > fila->tamanho || nave <= 0){
 
                     printf("Indice invalido. \n");
 
                 }else{
 
-                    infoNave(fila.naves[nave-1]);
+                    infoNave(fila->naves[nave-1]);
 
                 }
 
