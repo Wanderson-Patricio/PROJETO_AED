@@ -13,10 +13,10 @@
 // Al�m disso, um passageiro possui um identificador para dizer se ele est� doente, e se ele tem alguma especializa��o
 // Por exemplo, se � um m�dico.
 typedef struct passageiro{
-    char id[8];
+    int id;
     char nome[50];
     int idade;
-    char origem[4];
+    int origem;
     int doente;
     int especializado;
 } Passageiro;
@@ -25,7 +25,7 @@ typedef struct passageiro{
 // Uma nave possui um id, um conjunto de passageiros, e uma lista de recursos
 // Al�m de ter uma prioridade, dependendo de seus recursos e passageiros
 typedef struct nave{
-    char id[8];
+    int id;
     char recursos[MAX_RECURSOS][50];
     Passageiro passageiros[MAX_PASSAGEIROS];
     int prioridade;
