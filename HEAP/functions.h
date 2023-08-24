@@ -36,7 +36,7 @@ typedef struct nave{
 // al�m de uma vari�vel que indica a quantidade na fila
 typedef struct heap{
     int tamanho;
-    Nave naves[MAX_NAVES];
+    Nave naves[MAX_NAVES + 1];
 } Heap;
 
 
@@ -45,52 +45,23 @@ typedef struct heap{
 /************************************************/
 
 // Essa fun��o cria um passageiro atrav�s de suas informa��es
-Passageiro criarPassageiro(char* nome, int idade, int doente, int especializado, char* origem, char* id){
+Passageiro criarPassageiro(char* nome, int idade, int doente, int especializado, int origem, int id){
     Passageiro p;
     strcpy(p.nome, nome);
     p.idade = idade;
     p.doente = doente;
     p.especializado = especializado;
-    strcpy(p.origem, origem);
-    strcpy(p.id, id);
+    p.origem;
+    p.id;
 
     return p;
 }
 
 
-// Essa fun��o calcula a prioridade inicial de uma nave com base nos recursos e passageiros
-int calculaPrioridade(Nave n){
-    int prioridade = 0;
-
-    for(int i = 0; i < MAX_PASSAGEIROS; i++){
-
-        // Se o passageiro � especializado a prioridade aumenta em 5
-        if(n.passageiros[i].especializado == 1){
-            prioridade += 5;
-        }
-
-        // Se o passageiro est� doente a prioridade aumenta em 5
-        if(n.passageiros[i].doente == 1){
-            prioridade += 3;
-        }
-    }
-
-    for(int i = 0; i < MAX_RECURSOS; i++){
-
-        // Se algum dos recursos da nave for essencial a prioridade aumenta em 20
-        if(strcmp(n.recursos[i], "ALIMENTOS") == 0 || strcmp(n.recursos[i], "REMEDIOS") == 0 || strcmp(n.recursos[i], "ARMAMENTO") || strcmp(n.recursos[i], "RECURSOS RAROS")){
-            prioridade += 20;
-        }
-    }
-
-    return prioridade;
-}
-
-
 // Essa fun��o cria uma nave atrav�s de suas informa��es
-Nave criarNave(char* id, char recursos[][50], Passageiro passageiros[]){
+Nave criarNave(int id, char recursos[][50], Passageiro passageiros[]){
     Nave n;
-    strcpy(n.id, id);
+    p.id = id;
 
     for(int i = 0; i<MAX_PASSAGEIROS; i++){
         n.passageiros[i] = *(passageiros+i);
@@ -100,15 +71,16 @@ Nave criarNave(char* id, char recursos[][50], Passageiro passageiros[]){
         strcpy(n.recursos[i], *(recursos + i));
     }
 
-    n.prioridade = calculaPrioridade(n);
+    srand(TIME(NULL))
+    n.prioridade = rand()%100 + 1;
     return n;
 }
 
 
 // Cria uma Fila de Prioridades vazia
-Heap criarHeap(){
-    Heap h;
-    h.tamanho = 0;
+Heap* criarHeap(){
+    Heap* h = (heap*) malloc(sizeof(heap));
+    h->tamanho = 0;
 
     return h;
 }
@@ -118,8 +90,8 @@ Heap criarHeap(){
 void infoPassageiro(Passageiro p){
     printf("Nome: %s \n", p.nome);
     printf("Idade: %d anos \n", p.idade);
-    printf("Id: %s \n", p.id);
-    printf("Planeta de Origem: %s \n", p.origem);
+    printf("Id: %d \n", p.id);
+    printf("Planeta de Origem: %d \n", p.origem);
 
     if(p.especializado == 1){
         printf("Possui especializa��o. \n");
@@ -139,7 +111,7 @@ void infoPassageiro(Passageiro p){
 // Imprime as informa��es da nave n
 void infoNave(Nave n){
     printf("******************************************************* \n");
-    printf("Id da Nave: %s \n", n.id);
+    printf("Id da Nave: %d \n", n.id);
     printf("Prioridade: %d \n", n.prioridade);
     printf("------Recursos na nave------ \n");
 
@@ -158,23 +130,13 @@ void infoNave(Nave n){
 
 // Essa fun��o escolhe um n�mero aleat�rio entre 1 e 10
 // Se o n�mero for igual a 10 (10% de chance) ele altera a prioridade da nave
-// Atrav�s da alterarPrioridade()
 void verificarPrioridade(Nave* n){
     srand(time(NULL));
     int probabilidade = rand()%10 + 1;
 
     if(probabilidade == 10){
-        n->prioridade = alterarPrioridade();
+        n->prioridade = rand()%101;
     }
-}
-
-
-// Retorna um n�mero aleat�rio entre 0 e 100
-int alterarPrioridade(){
-    srand(time(NULL));
-
-    int newPrioridade = rand()%101;
-    return newPrioridade;
 }
 
 
@@ -182,9 +144,9 @@ int alterarPrioridade(){
 void inserirNave(Nave n, Heap* h){
     if(h->tamanho < MAX_NAVES){
         verificarPrioridade(&n);
-        h->naves[h->tamanho] = n;
-        subir(h, h->tamanho);
+        h->naves[h->tamanho +1] = n;
         h->tamanho++;
+        subir(h, h->tamanho);
         printf("Inserido com sucesso. \n");
     }else{
         printf("A fila est� cheia. \n");
@@ -196,10 +158,10 @@ void inserirNave(Nave n, Heap* h){
 void removerNave(Heap* h){
     if(h->tamanho > 0){
         printf("Nave a partir \n\n");
-        infoNave(h->naves[0]);
-        trocar(h, 0, h->tamanho - 1);
+        infoNave(h->naves[1]);
+        trocar(h, 1, h->tamanho);
         h->tamanho--;
-        h->naves[h->tamanho].prioridade = -1;
+        descer(h, 1)
     }
 
 }
@@ -217,9 +179,9 @@ void trocar(Heap* h, int i, int j){
 // Verifica se a nave na posição index atende a condição da heap, caso contrario, ela sobe para a posição i/2
 // O processo é feito de maneira recursiva até ela chegar a posição correta
 void subir(Heap* h, int index){
-    int j = (int) index/2;
+    int j = index/2;
 
-    if(j>=0){
+    if(j>=1){
         if(h->naves[index].prioridade > h->naves[j].prioridade){
             trocar(h, index, j);
             subir(h, j);
@@ -233,7 +195,7 @@ void subir(Heap* h, int index){
 void descer(Heap* h, int index){
     int j = 2*index;
 
-    if(j <= MAX_NAVES){
+    if(j <= h->tamanho){
         if(j < MAX_NAVES){
             if(h->naves[j+1].prioridade > h->naves[j].prioridade){
                 j = j+1;
@@ -249,13 +211,13 @@ void descer(Heap* h, int index){
 
 
 // Exibe a informação de todas as naves de uma heap
-void exibir_heap(Heap* h, int i){
-    if(i < h->tamanho){
+void exibir_heap(Heap* h){
+    if(h->tamanho == 0){
+        printf("Fila vazia. \n");
+    }
+
+    for(int i = 1 0; i<= h->tamanho; i++){
         infoNave(h->naves[i]);
-        system("pause");
-        system("cls");
-        exibir_heap(h, 2*i);
-        exibir_heap(h, 2*i + 1);
     }
 }
 
