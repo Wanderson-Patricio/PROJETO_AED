@@ -3,9 +3,11 @@
 #include <string.h>
 #include <time.h>
 #include "functions.h"
-/************************************************/
-/***************Implementa��o das Estruturas*****/
-/************************************************/
+
+
+/*************************************************************************************************************/
+/***************************************Implementação das Estruturas******************************************/
+/*************************************************************************************************************/
 
 typedef struct heap{
     int tamanho;
@@ -13,9 +15,9 @@ typedef struct heap{
 } Heap;
 
 
-/************************************************/
-/***************Implementa��o das Fun��es********/
-/************************************************/
+/*************************************************************************************************************/
+/**********************************************Implementação das Funções**************************************/
+/*************************************************************************************************************/
 
 Passageiro criarPassageiro(char* nome, int idade, int doente, int especializado, int origem, int id){
     Passageiro p;
@@ -23,8 +25,8 @@ Passageiro criarPassageiro(char* nome, int idade, int doente, int especializado,
     p.idade = idade;
     p.doente = doente;
     p.especializado = especializado;
-    p.origem;
-    p.id;
+    p.origem = origem;
+    p.id = id;
 
     return p;
 }
@@ -176,19 +178,90 @@ void exibir_heap(Heap* h){
     }
 }
 
-/************************************************/
-/***************Funções de inicialização*********/
-/***************E Finalização********************/
-/************************************************/
+/*************************************************************************************************************/
+/**********************************************Funções de inicialização***************************************/
+/**********************************************E Finalização**************************************************/
+/*************************************************************************************************************/
 
-void gera_heap_por_csv(char* passageiros, char* recursos, Heap* h){
+void gera_heap_por_csv(char* file_passageiros, char* file_recursos, Heap* h){
+    int TOTAL_NAVES = 26;
+    Nave newNave[TOTAL_NAVES];
+    int contador;
+
+    char *S[50], *ptr;
+    FILE *fptr;
+
+    // Abertura do arquivo de recursos
+    fptr = fopen(file_recursos, "r");
+    int num_nave = 0;
+
+    while(EOF != fscanf(fptr, "%[^/n]/n", S)){
+        // Iterador para os campos separados por ','
+        ptr = strtok(S, ",");
+        contador = 0;
+
+        while(ptr != NULL){
+            printf("%s ", ptr);
+
+            strcpy(newNave[num_nave].recursos[contador], ptr);
+            contador++;
+            ptr = strtok(NULL, ",");
+        }
+        printf("\n");
+        num_nave++;
+    }
+
+    fclose(fptr);
+
+    FILE *fptr2 = fopen(file_passageiros, "r");
+    num_nave = 0;
+    int num_passageiro = 0, passageiro_atual, nave_atual = -1;
+
+    while(EOF != fscanf(fptr2, "%[^/n]/n", S)){
+        // Iterador para os campos separados por ','
+        ptr = strtok(S, ",");
+        passageiro_atual = num_passageiro%5;
+        contador = 0;
+        if(num_nave%5 == 0){
+            nave_atual++;
+        }
+
+        while(ptr != NULL){
+
+
+            switch(contador){
+                case 0: newNave[nave_atual].passageiros[passageiro_atual].id = atoi(ptr); break;
+                case 1: {
+                    strcpy(newNave[nave_atual].passageiros[passageiro_atual].nome, ptr);
+                    break;
+                }
+                case 2: newNave[nave_atual].passageiros[passageiro_atual].idade = atoi(ptr); break;
+                case 3: newNave[nave_atual].passageiros[passageiro_atual].origem = atoi(ptr); break;
+                case 4: newNave[nave_atual].passageiros[passageiro_atual].doente = atoi(ptr); break;
+                case 5: newNave[nave_atual].passageiros[passageiro_atual].especializado = atoi(ptr); break;
+            }
+
+
+            contador++;
+            ptr = strtok(NULL, ",");
+        }
+        printf("\n");
+
+        num_passageiro++;
+        num_nave++;
+    }
+
+    fclose(fptr2);
+
+    for(int i=0; i<TOTAL_NAVES; i++){
+        inserirNave(newNave[i], h);
+    }
 
 }
 
 
 void inicializar(){
     Heap *fila = criarHeap();
-
 
     int continuar = -1;
     int opcao;

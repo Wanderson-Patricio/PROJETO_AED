@@ -22,29 +22,30 @@ typedef struct nave{
     int prioridade;
 } Nave;
 
+// O heap é uma fila de naves
 typedef struct heap Heap;
 
 
 /************************************************/
-/***************Implementa��o das Fun��es********/
+/***************Declaração das Funções***********/
 /************************************************/
 
-// Essa fun��o cria um passageiro atrav�s de suas informa��es
+// Essa função cria um passageiro através de suas informações
 Passageiro criarPassageiro(char* nome, int idade, int doente, int especializado, int origem, int id);
-// Essa fun��o cria uma nave atrav�s de suas informa��es
+// Essa função cria uma nave através de suas informações
 Nave criarNave(int id, char recursos[][50], Passageiro passageiros[]);
 // Cria uma Fila de Prioridades vazia
 Heap* criarHeap();
 // Libera a Fila da memória
 void liberarHeap(Heap* h);
-// Imprime as informa��es do passageiro p
+// Imprime as informações do passageiro p
 void infoPassageiro(Passageiro p);
-// Imprime as informa��es da nave n
+// Imprime as informações da nave n
 void infoNave(Nave n);
 
 
-// Essa fun��o escolhe um n�mero aleat�rio entre 1 e 10
-// Se o n�mero for igual a 10 (10% de chance) ele altera a prioridade da nave
+// Essa função escolhe um número aleatório entre 1 e 10
+// Se o número for igual a 10 (10% de chance) ele altera a prioridade da nave
 void verificarPrioridade(Nave* n);
 
 // Troca de lugar as naves i e j da Heap h
@@ -63,7 +64,7 @@ void removerNave(Heap* h);
 void exibir_heap(Heap* h);
 
 
-void gera_heap_por_csv(char* passageiros, char* recursos, Heap* h);
+void gera_heap_por_csv(char* file_passageiros, char* file_recursos, Heap* h);
 void inicializar();
 void finalizar();
 

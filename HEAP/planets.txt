@@ -1,28 +1,28 @@
 *************** Lista De Planetas da Galáxia e seus ids ***************
 
-001 - Ajilon Prime
-002 - Balancar
-003 - Cerberus
-004 - Dedestris
-005 - Eden
-006 - Ferenginar
-007 - Gagarin
-008 - Hurkos
-009 - Ilari
-010 - Jupiter
-011 - Khitomer
-012 - Ledonia
-013 - Mintaka
-014 - Narendra
-015 - Omicron Ceti 3
-016 - Pollux V
-017 - Quatal Prime
-018 - Rigel 7
-019 - Solarion 4
-020 - Titan
-021 - Ultima Thule
-022 - Vendikar
-023 - Wrigley Pleasure Pl.
-024 - Xerxes VII
-025 - Yadalla Prime
-026 - Zetar
+1001 - Ajilon Prime
+1002 - Balancar
+1003 - Cerberus
+1004 - Dedestris
+1005 - Eden
+1006 - Ferenginar
+1007 - Gagarin
+1008 - Hurkos
+1009 - Ilari
+1010 - Jupiter
+1011 - Khitomer
+1012 - Ledonia
+1013 - Mintaka
+1014 - Narendra
+1015 - Omicron Ceti 3
+1016 - Pollux V
+1017 - Quatal Prime
+1018 - Rigel 7
+1019 - Solarion 4
+1020 - Titan
+1021 - Ultima Thule
+1022 - Vendikar
+1023 - Wrigley Pleasure Pl.
+1024 - Xerxes VII
+1025 - Yadalla Prime
+1026 - Zetar

@@ -31,10 +31,10 @@
 		<Compiler>
 			<Add option="-Wall" />
 		</Compiler>
-		<Unit filename="functions.h">
-			<Option target="&lt;{~None~}&gt;" />
+		<Unit filename="functions.c">
+			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="leitor_csv.h">
+		<Unit filename="functions.h">
 			<Option target="&lt;{~None~}&gt;" />
 		</Unit>
 		<Unit filename="main.c">
