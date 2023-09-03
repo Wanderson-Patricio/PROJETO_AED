@@ -1,14 +1,14 @@
 # depslib dependency file v1.0
-1692970585 source:c:\users\wanderson patricio\documents\materiais - faculdade\listas\3º semestre\algoritmos e estruturas de dados ii\projeto_aed\heap\main.c
+1693774680 source:c:\users\wanderson patricio\documents\materiais - faculdade\listas\3º semestre\algoritmos e estruturas de dados ii\projeto_aed\heap\main.c
 	<stdio.h>
 	<stdlib.h>
 	<string.h>
 	<time.h>
 	"functions.h"
 
-1692964865 c:\users\wanderson patricio\documents\materiais - faculdade\listas\3º semestre\algoritmos e estruturas de dados ii\projeto_aed\heap\functions.h
+1693774980 c:\users\wanderson patricio\documents\materiais - faculdade\listas\3º semestre\algoritmos e estruturas de dados ii\projeto_aed\heap\functions.h
 
-1692972489 source:c:\users\wanderson patricio\documents\materiais - faculdade\listas\3º semestre\algoritmos e estruturas de dados ii\projeto_aed\heap\functions.c
+1693774560 source:c:\users\wanderson patricio\documents\materiais - faculdade\listas\3º semestre\algoritmos e estruturas de dados ii\projeto_aed\heap\functions.c
 	<stdio.h>
 	<stdlib.h>
 	<string.h>

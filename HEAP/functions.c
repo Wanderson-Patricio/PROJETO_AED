@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
+#include <locale.h>
 #include "functions.h"
 
 
@@ -130,7 +131,7 @@ void descer(Heap* h, int index){
     int j = 2*index;
 
     if(j <= h->tamanho){
-        if(j < MAX_NAVES){
+        if(j < h->tamanho){
             if(h->naves[j+1].prioridade > h->naves[j].prioridade){
                 j = j+1;
             }
@@ -143,10 +144,10 @@ void descer(Heap* h, int index){
     }
 }
 
-void inserirNave(Nave n, Heap* h){
+void inserirNave(Nave *n, Heap* h){
     if(h->tamanho < MAX_NAVES){
-        verificarPrioridade(&n);
-        h->naves[h->tamanho +1] = n;
+        verificarPrioridade(n);
+        h->naves[h->tamanho +1] = *n;
         h->tamanho++;
         subir(h, h->tamanho);
         printf("Inserido com sucesso. \n");
@@ -175,6 +176,14 @@ void exibir_heap(Heap* h){
 
     for(int i = 1; i<= h->tamanho; i++){
         infoNave(h->naves[i]);
+        system("pause");
+        system("cls");
+    }
+}
+
+void ordenaHeap(Heap* h){
+    for(int i= h->tamanho/2; i>=1; i--){
+        descer(h, i);
     }
 }
 
@@ -183,85 +192,86 @@ void exibir_heap(Heap* h){
 /**********************************************E Finalização**************************************************/
 /*************************************************************************************************************/
 
-void gera_heap_por_csv(char* file_passageiros, char* file_recursos, Heap* h){
-    int TOTAL_NAVES = 26;
-    Nave newNave[TOTAL_NAVES];
-    int contador;
+void adiciona_passageiros(char* file_passageiros, Heap* h){
+    char *S[MAX_LINHAS], *ptr;
+    FILE *fptr;
+    srand(time(NULL));
 
-    char *S[50], *ptr;
+    // Abertura do arquivo de passageiros
+    fptr = fopen(file_passageiros, "r");
+    int linha_atual = 0, nave_atual = 1, passageiro_atual, coluna_atual;
+
+    while(fgets(S, MAX_LINHAS, fptr) != NULL){
+        ptr = strtok(S, ",");
+
+        if(linha_atual%MAX_PASSAGEIROS == 0){
+            nave_atual++;
+        }
+
+        passageiro_atual = linha_atual%MAX_PASSAGEIROS;
+        coluna_atual = 0;
+
+        while(ptr != NULL){
+
+            switch(coluna_atual){
+                case 0: h->naves[nave_atual].passageiros[passageiro_atual].id = atoi(ptr); break;
+                case 1: strcpy(h->naves[nave_atual].passageiros[passageiro_atual].nome, ptr); break;
+                case 2: h->naves[nave_atual].passageiros[passageiro_atual].idade = atoi(ptr); break;
+                case 3: h->naves[nave_atual].passageiros[passageiro_atual].origem = atoi(ptr); break;
+                case 4: h->naves[nave_atual].passageiros[passageiro_atual].doente = atoi(ptr); break;
+                case 5: h->naves[nave_atual].passageiros[passageiro_atual].especializado = atoi(ptr); break;
+            }
+
+            coluna_atual++;
+            ptr = strtok(NULL, ",");
+        }
+
+        linha_atual++;
+    }
+
+    fclose(fptr);
+
+    for(int i = 1; i<= TOTAL_NAVES_CSV; i++){
+        h->naves[i].prioridade = rand()%100 + 1;
+    }
+}
+
+
+void adiciona_recursos(char* file_recursos, Heap* h){
+
+    char *S[MAX_LINHAS], *ptr;
     FILE *fptr;
 
     // Abertura do arquivo de recursos
     fptr = fopen(file_recursos, "r");
-    int num_nave = 0;
+    int num_nave = 1, num_recurso;
 
-    while(EOF != fscanf(fptr, "%[^/n]/n", S)){
-        // Iterador para os campos separados por ','
+    while(fgets(S, MAX_LINHAS, fptr) != NULL){
+        num_recurso = 0;
         ptr = strtok(S, ",");
-        contador = 0;
 
         while(ptr != NULL){
-            printf("%s ", ptr);
-
-            strcpy(newNave[num_nave].recursos[contador], ptr);
-            contador++;
+            strcpy(h->naves[num_nave].recursos[num_recurso], ptr);
+            num_recurso++;
             ptr = strtok(NULL, ",");
         }
-        printf("\n");
         num_nave++;
     }
 
     fclose(fptr);
 
-    FILE *fptr2 = fopen(file_passageiros, "r");
-    num_nave = 0;
-    int num_passageiro = 0, passageiro_atual, nave_atual = -1;
-
-    while(EOF != fscanf(fptr2, "%[^/n]/n", S)){
-        // Iterador para os campos separados por ','
-        ptr = strtok(S, ",");
-        passageiro_atual = num_passageiro%5;
-        contador = 0;
-        if(num_nave%5 == 0){
-            nave_atual++;
-        }
-
-        while(ptr != NULL){
-
-
-            switch(contador){
-                case 0: newNave[nave_atual].passageiros[passageiro_atual].id = atoi(ptr); break;
-                case 1: {
-                    strcpy(newNave[nave_atual].passageiros[passageiro_atual].nome, ptr);
-                    break;
-                }
-                case 2: newNave[nave_atual].passageiros[passageiro_atual].idade = atoi(ptr); break;
-                case 3: newNave[nave_atual].passageiros[passageiro_atual].origem = atoi(ptr); break;
-                case 4: newNave[nave_atual].passageiros[passageiro_atual].doente = atoi(ptr); break;
-                case 5: newNave[nave_atual].passageiros[passageiro_atual].especializado = atoi(ptr); break;
-            }
-
-
-            contador++;
-            ptr = strtok(NULL, ",");
-        }
-        printf("\n");
-
-        num_passageiro++;
-        num_nave++;
-    }
-
-    fclose(fptr2);
-
-    for(int i=0; i<TOTAL_NAVES; i++){
-        inserirNave(newNave[i], h);
-    }
+    h->tamanho = TOTAL_NAVES_CSV;
 
 }
 
 
 void inicializar(){
+    setlocale(LC_ALL, "portuguese");
     Heap *fila = criarHeap();
+
+    adiciona_passageiros("passageiros copy.csv", fila);
+    adiciona_recursos("recursos copy.csv", fila);
+    ordenaHeap(fila);
 
     int continuar = -1;
     int opcao;
@@ -375,7 +385,7 @@ void inicializar(){
                     strcpy(newNave.recursos[i], recursos);
                 }
 
-                inserirNave(newNave, fila);
+                inserirNave(&newNave, fila);
                 system("pause");
                 system("cls");
                 break;
