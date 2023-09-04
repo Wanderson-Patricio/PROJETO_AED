@@ -251,6 +251,7 @@ void adiciona_recursos(char* file_recursos, Heap* h){
         ptr = strtok(S, ",");
 
         while(ptr != NULL){
+            h->naves[num_nave].id = 1000 + num_nave;
             strcpy(h->naves[num_nave].recursos[num_recurso], ptr);
             num_recurso++;
             ptr = strtok(NULL, ",");
