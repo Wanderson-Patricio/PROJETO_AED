@@ -1,0 +1,17 @@
+# depslib dependency file v1.0
+1694620387 source:c:\users\wanderson patricio\documents\materiais - faculdade\listas\3º semestre\algoritmos e estruturas de dados ii\projeto_aed\hash map\header.c
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	<locale.h>
+	"header.h"
+
+1694619777 c:\users\wanderson patricio\documents\materiais - faculdade\listas\3º semestre\algoritmos e estruturas de dados ii\projeto_aed\hash map\header.h
+
+1694620335 source:c:\users\wanderson patricio\documents\materiais - faculdade\listas\3º semestre\algoritmos e estruturas de dados ii\projeto_aed\hash map\main.c
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	<locale.h>
+	"header.h"
+
