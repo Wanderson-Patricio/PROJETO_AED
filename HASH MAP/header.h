@@ -2,7 +2,7 @@
 #define HASH_H_INCLUDED
 
 #define MAX_RESOURCES 3 // A quantidade de recursos por compartimento
-#define MAX_PERMUTATIONS 6 // 3 recursos por compartimento, dando 3! permutacÃ§Ãµes
+#define MAX_PERMUTATIONS 6 // 3 recursos por compartimento, dando 3! permutacções
 #define MAX_SIZE 556 // 5 diferentes recursos (555+1)
 
 typedef struct resource{
@@ -39,12 +39,12 @@ void infoTable(Table* t);
 
 /************************************************************/
 
-// FunÃ§Ã£o para concatenar 4 inteiros
+// Função para concatenar 4 inteiros
 int concatenateIntegers(int numbers[], int n);
 
 void selectionSort(int arr[], int n);
 
-// FunÃ§Ã£o hash para o compartimento
+// Função hash para o compartimento
 int h(Compartment c);
 
 int verificaAbertura(Table* t, int linha);
