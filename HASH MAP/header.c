@@ -90,30 +90,18 @@ void infoTable(Table* t){
             printf("Linha %d - %d compartimentos \n", i, t->qtds[i]);
         }
     }
-    printf("\nAo total ja foram enviadas %d naves após a última abertura.\n ", t->contador);
+    printf("\nAo total ja foram enviadas %d naves apÃ³s a Ãºltima abertura.\n ", t->contador);
 }
 
 /************************************************************/
 
-// Função para concatenar 4 inteiros
+// FunÃ§Ã£o para concatenar 4 inteiros
 int concatenateIntegers(int numbers[], int n) {
-    // Convert integers to strings
-    char str[n][12];
+    int result = 0;
 
     for(int i=0; i<n; i++){
-        sprintf(str[i], "%d", numbers[i]);
+        result = result*10 + numbers[i];
     }
-
-    // Concatenate the strings
-    char concatenatedStr[12*n]; // Adjust the size based on your requirements
-    strcpy(concatenatedStr, str[0]);
-
-    for(int i=1; i<n; i++){
-        strcat(concatenatedStr, str[i]);
-    }
-
-    // Convert the concatenated string back to an integer
-    int result = atoi(concatenatedStr);
 
     return result;
 }
@@ -135,7 +123,7 @@ void selectionSort(int arr[], int n){
     }
 }
 
-// Função hash para o compartimento
+// FunÃ§Ã£o hash para o compartimento
 int h(Compartment c){
     int ids[MAX_RESOURCES];
     for(int i=0; i<MAX_RESOURCES; i++){
@@ -186,9 +174,9 @@ void insertCompartment(Table* t, Compartment c){
 
     if(verificaAbertura(t, linha) == 1){
         if(t->aberturas == 0){
-            printf("O portal abrirá pela primeira vez na %dª inserção.\n", t->contador);
+            printf("O portal abrirÃ¡ pela primeira vez na %dÂª inserÃ§Ã£o.\n", t->contador);
         }else{
-            printf("O portal abrirá novamente na %dª inserção após a %dª abertura.\n", t->contador, t->aberturas);
+            printf("O portal abrirÃ¡ novamente na %dÂª inserÃ§Ã£o apÃ³s a %dÂª abertura.\n", t->contador, t->aberturas);
         }
         t->aberturas++;
         resetar(t, linha);
