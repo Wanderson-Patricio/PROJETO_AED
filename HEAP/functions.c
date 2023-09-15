@@ -323,7 +323,7 @@ void inicializar(){
                     printf("Indice invalido. \n");
 
                 }else{
-
+                    infoNave(fila->naves[nave]);
                     printf("Qual sera a nova prioridade? \n");
                     scanf("%d", &prioridade);
 
