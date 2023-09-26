@@ -15,6 +15,7 @@ Resource createResource(int id){
         case 3: strcpy(r.nome, "remedios"); break;
         case 4: strcpy(r.nome, "comida"); break;
         case 5: strcpy(r.nome, "armamento"); break;
+        case 6: strcpy(r.nome, "agua"); break;
     }
 
     return r;
