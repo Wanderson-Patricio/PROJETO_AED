@@ -16,6 +16,7 @@ Resource createResource(int id){
         case 4: strcpy(r.nome, "comida"); break;
         case 5: strcpy(r.nome, "armamento"); break;
         case 6: strcpy(r.nome, "agua"); break;
+        default: strcpy(r.nome, ""); break;
     }
 
     return r;
@@ -72,31 +73,19 @@ void deleteTable(Table* t){
 }
 
 void infoTable(Table* t){
-    /*
-    for(int i=0; i<MAX_SIZE; i++){
-        if(t->qtds[i] != 0){
-            printf("----------------------------------------------\n");
-            printf("Compartimentos na linha %d: \n", i);
-            for(int j=0; j<t->qtds[i]; j++){
-                infoCompartment(t->tabela[i][j]);
-            }
-            printf("----------------------------------------------\n");
-        }
-    }
-    */
-
     printf("Compartimentos na tabela: \n");
     for(int i=0; i<MAX_SIZE; i++){
         if(t->qtds[i] != 0){
             printf("Linha %d - %d compartimentos \n", i, t->qtds[i]);
+            infoCompartment(t->tabela[i][0]);
         }
     }
-    printf("\nAo total ja foram enviadas %d naves após a última abertura.\n ", t->contador);
+    printf("\nAo total ja foram enviadas %d naves apos a ultima abertura.\n ", t->contador);
 }
 
 /************************************************************/
 
-// Função para concatenar 4 inteiros
+// Fun��o para concatenar 4 inteiros
 int concatenateIntegers(int numbers[], int n) {
     int result = 0;
 
@@ -124,7 +113,7 @@ void selectionSort(int arr[], int n){
     }
 }
 
-// Função hash para o compartimento
+// Fun��o hash para o compartimento
 int h(Compartment c){
     int ids[MAX_RESOURCES];
     for(int i=0; i<MAX_RESOURCES; i++){
@@ -175,10 +164,11 @@ void insertCompartment(Table* t, Compartment c){
 
     if(verificaAbertura(t, linha) == 1){
         if(t->aberturas == 0){
-            printf("O portal abrirá pela primeira vez na %dª inserção.\n", t->contador);
+            printf("O portal abrira pela primeira vez na %da insercao.\n", t->contador);
         }else{
-            printf("O portal abrirá novamente na %dª inserção após a %dª abertura.\n", t->contador, t->aberturas);
+            printf("O portal abrira novamente na %da insercao apos a %da abertura.\n", t->contador, t->aberturas);
         }
+
         t->aberturas++;
         resetar(t, linha);
     }
