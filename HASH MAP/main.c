@@ -15,19 +15,19 @@ int main(){
     char *S[MAX_LINHAS], *ptr;
     FILE *fptr;
 
-    fptr = fopen("recursos1 - Copia.csv", "r");
+    fptr = fopen("recursos1.csv", "r");
 
     while(fgets(S, MAX_LINHAS, fptr) != NULL){
         ptr = strtok(S, ",");
         coluna = 0;
 
         while(ptr != NULL){
-            //ids[coluna] = atoi(ptr);
-
-            printf("%s ", ptr);
+            ids[coluna] = atoi(ptr);
             coluna++;
             ptr = strtok(NULL, ",");
         }
+
+        insertCompartment(t, createCompartment(ids));
     }
 
     fclose(fptr);
